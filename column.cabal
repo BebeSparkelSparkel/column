@@ -1,6 +1,7 @@
 cabal-version:      2.4
 name:               column
 version:            0.1.0.0
+build-type:     Simple
 
 -- A short (one-line) description of the package.
 -- synopsis:
@@ -29,34 +30,33 @@ library
   exposed-modules: Lib
   build-depends:
       base ^>=4.12.0.0
-    , microlens ^>=0.4.11.2
-    , microlens-mtl ^>=0.2.0.1
-    , microlens-th ^>=0.4.3.5
     , mtl ^>=2.2.2
   hs-source-dirs: src
   default-extensions:
     RankNTypes
     TemplateHaskell
+    LambdaCase
+    ScopedTypeVariables
   ghc-options: -Wall -Werror
   default-language: Haskell2010
 
 executable column-exe
-    main-is:          Main.hs
-
-    -- Modules included in this executable, other than Main.
-    -- other-modules:
-
-    -- LANGUAGE extensions used by modules in this package.
-    -- other-extensions:
-    build-depends:
-        base ^>=4.12.0.0
-      , commander-cli ^>=0.10.1.2
-      , column
-    hs-source-dirs:   app
-    default-language: Haskell2010
-    default-extensions:
-      TypeApplications
-      DataKinds
+  main-is:          Main.hs
+  default-extensions:
+    -- BlockArguments -- do not enable commander-cli does not play nicely with BlockArguments
+    TypeApplications
+    DataKinds
+  build-depends:
+      base ^>=4.12.0.0
+    , commander-cli ^>=0.10.1.2
+    , column
+    , monad-loops ^>=0.4.3
+    , mtl ^>=2.2.2
+  hs-source-dirs:   app
+  default-language: Haskell2010
+  default-extensions:
+    TypeApplications
+    DataKinds
 
 test-suite column-test
   type: exitcode-stdio-1.0
@@ -70,5 +70,6 @@ test-suite column-test
       base ^>=4.12.0.0
     , column
     , hspec ^>=2.7.4
+    , mtl ^>=2.2.2
   default-language: Haskell2010
   build-tool-depends: hspec-discover:hspec-discover ^>=2.7.4
