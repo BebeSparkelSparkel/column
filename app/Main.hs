@@ -13,8 +13,8 @@ main = command_
   . toplevel @"argument-taker"
   . optDef @"s" @"seperator" ' ' $ \seperator ->
     optDef @"f" @"fill character" seperator $ \filler -> raw $ do
-      (cs,is) <- flip runStateT [] $ flip untilM (lift isEOF) $ do
-        l <- lift $ hGetLine stdin
-        splitCount seperator l
-      for_ cs $ putStrLn . rightPad filler is
+      (rows,(initSeps,widths)) <- flip runStateT (0,[]) $ flip untilM (lift isEOF)
+        $   lift (hGetLine stdin)
+        >>= initSepSplitCount seperator
+      for_ rows $ putStrLn . rightPad filler widths
 
