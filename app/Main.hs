@@ -4,7 +4,7 @@ import Options.Commander (command_, toplevel, optDef, raw)
 import System.IO (isEOF, hGetLine, stdin, stdout)
 import Control.Monad.Loops (untilM)
 import Control.Monad.State (runStateT, get, lift)
-import Lib (rightPad, splitCount)
+import Lib
 import Data.Foldable (for_)
 
 
@@ -16,5 +16,5 @@ main = command_
       (rows,(initSeps,widths)) <- flip runStateT (0,[]) $ flip untilM (lift isEOF)
         $   lift (hGetLine stdin)
         >>= initSepSplitCount seperator
-      for_ rows $ putStrLn . rightPad filler widths
+      for_ rows $ putStrLn . initAlignColumns initSeps filler widths
 
